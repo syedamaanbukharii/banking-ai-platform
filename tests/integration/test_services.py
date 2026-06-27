@@ -5,6 +5,7 @@ from __future__ import annotations
 import pytest
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+from tests.unit.test_router import FakeProvider
 
 from banking_ai.ai.router import ModelRouter
 from banking_ai.ai.vector_store import HashingEmbedder, InMemoryVectorStore
@@ -20,7 +21,6 @@ from banking_ai.services.seed import seed_admin
 from banking_ai.services.storage_service import LocalFileStorage
 from banking_ai.services.user_service import UserService
 from banking_ai.services.workflow_service import WorkflowService
-from tests.unit.test_router import FakeProvider
 
 
 @pytest.mark.asyncio

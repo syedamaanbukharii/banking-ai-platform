@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import pytest
 from httpx import AsyncClient
-
 from tests.e2e.conftest import auth_header, login_admin
 
 

@@ -6,6 +6,7 @@ import uuid
 from datetime import date
 
 import pytest
+from tests.unit.test_router import FakeProvider
 
 from banking_ai.agents.compliance import ComplianceAgent, ComplianceInput
 from banking_ai.agents.document import DocumentAgent, DocumentAgentInput, parse_fields
@@ -22,7 +23,6 @@ from banking_ai.ai.vector_store import (
     VectorRecord,
 )
 from banking_ai.db.models.enums import RiskLevel, WorkflowType
-from tests.unit.test_router import FakeProvider
 
 # --- document agent ---
 

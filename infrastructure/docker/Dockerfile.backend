@@ -1,0 +1,47 @@
+# syntax=docker/dockerfile:1
+# Multi-stage build for the FastAPI backend.
+FROM python:3.12-slim AS base
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+WORKDIR /app
+
+# ---- builder: install dependencies into a venv ----
+FROM base AS builder
+
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Copy only what is needed to resolve and install dependencies first (cache layer).
+COPY pyproject.toml README.md ./
+COPY apps/backend ./apps/backend
+
+# Install the project (production extras: storage + workflow).
+RUN pip install --upgrade pip && pip install ".[storage,workflow]"
+
+# ---- runtime: minimal image with the venv and source ----
+FROM base AS runtime
+
+# Run as a non-root user.
+RUN useradd --create-home --uid 10001 appuser
+
+COPY --from=builder /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+COPY apps/backend ./apps/backend
+COPY migrations ./migrations
+COPY alembic.ini ./alembic.ini
+
+ENV PYTHONPATH=/app/apps/backend
+USER appuser
+
+EXPOSE 8000
+
+# Liveness is also wired as a container HEALTHCHECK.
+HEALTHCHECK --interval=30s --timeout=3s --start-period=20s --retries=3 \
+    CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/api/v1/health').status==200 else 1)"
+
+CMD ["uvicorn", "banking_ai.main:app", "--host", "0.0.0.0", "--port", "8000"]

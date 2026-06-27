@@ -1,0 +1,10 @@
+apiVersion: 1
+providers:
+  - name: banking-ai
+    orgId: 1
+    folder: "Banking AI"
+    type: file
+    disableDeletion: false
+    editable: true
+    options:
+      path: /var/lib/grafana/dashboards

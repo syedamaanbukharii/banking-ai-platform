@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: banking-ai-config
+  namespace: banking-ai
+data:
+  APP_ENV: "production"
+  APP_LOG_JSON: "true"
+  SECURITY_AUTH_MODE: "oidc"
+  LLM_ROUTER_POLICY: "prefer_online"
+  VECTOR_BACKEND: "pgvector"
+  WORKFLOW_BACKEND: "temporal"
+  STORAGE_USE_LOCAL_FS: "false"
+  METRICS_ENABLED: "true"

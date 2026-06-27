@@ -1,0 +1,63 @@
+{
+  "realm": "banking-ai",
+  "enabled": true,
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "roles": {
+    "realm": [
+      { "name": "customer_support_agent", "description": "Customer support agent" },
+      { "name": "banking_operations_executive", "description": "Banking operations executive" },
+      { "name": "compliance_officer", "description": "Compliance officer" },
+      { "name": "risk_analyst", "description": "Risk analyst" },
+      { "name": "loan_officer", "description": "Loan officer" },
+      { "name": "auditor", "description": "Auditor (read-only)" },
+      { "name": "manager", "description": "Manager (approver)" },
+      { "name": "system_admin", "description": "System administrator" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "banking-ai-backend",
+      "enabled": true,
+      "publicClient": false,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "redirectUris": ["http://localhost:3000/*", "http://localhost:8000/*"],
+      "webOrigins": ["http://localhost:3000", "http://localhost:8000"],
+      "secret": "local-dev-only-change-me",
+      "protocolMappers": [
+        {
+          "name": "realm-roles-to-roles-claim",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "claim.name": "roles",
+            "jsonType.label": "String",
+            "multivalued": "true",
+            "access.token.claim": "true",
+            "id.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "manager@local.dev",
+      "email": "manager@local.dev",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Local",
+      "lastName": "Manager",
+      "credentials": [
+        { "type": "password", "value": "Manager123!Local", "temporary": false }
+      ],
+      "realmRoles": ["manager"]
+    }
+  ]
+}

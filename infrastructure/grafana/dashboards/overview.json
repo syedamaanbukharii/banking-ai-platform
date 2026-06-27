@@ -1,0 +1,26 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "HTTP requests (rate)",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+      "targets": [
+        {"expr": "sum(rate(http_requests_total[5m]))", "legendFormat": "req/s"}
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Process CPU seconds",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+      "targets": [
+        {"expr": "rate(process_cpu_seconds_total[5m])", "legendFormat": "cpu"}
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "title": "Banking AI - Overview",
+  "uid": "banking-ai-overview",
+  "version": 1
+}

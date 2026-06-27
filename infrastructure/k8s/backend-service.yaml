@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: banking-ai-backend
+  namespace: banking-ai
+spec:
+  selector: { app: banking-ai-backend }
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8000
+  type: ClusterIP
